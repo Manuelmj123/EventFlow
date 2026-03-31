@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-EventFlow.Worker.Audit-e3f3d2f9-62f2-4055-999a-60b252b8100f</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.4" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\EventFlow.Application\EventFlow.Application.csproj" />
+		<ProjectReference Include="..\EventFlow.Infrastructure\EventFlow.Infrastructure.csproj" />
+		<ProjectReference Include="..\EventFlow.Contracts\EventFlow.Contracts.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\EventFlow.Application\EventFlow.Application.csproj" />
+		<ProjectReference Include="..\EventFlow.Domain\EventFlow.Domain.csproj" />
+		<ProjectReference Include="..\EventFlow.Contracts\EventFlow.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.10" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+
+		<PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+</Project>

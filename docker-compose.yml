@@ -1,0 +1,138 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: eventflow-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: eventflow
+      MYSQL_USER: eventflow
+      MYSQL_PASSWORD: eventflowpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - eventflow_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: eventflow-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - eventflow_rabbitmq_data:/var/lib/rabbitmq
+
+  api:
+    build:
+      context: .
+      dockerfile: src/EventFlow.Api/Dockerfile
+    container_name: eventflow-api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: server=mysql;port=3306;database=eventflow;user=eventflow;password=eventflowpassword
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+      RabbitMq__ExchangeName: eventflow.exchange
+    ports:
+      - "8080:8080"
+
+  worker-validator:
+    build:
+      context: .
+      dockerfile: src/EventFlow.Worker.Validator/Dockerfile
+    container_name: eventflow-worker-validator
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: server=mysql;port=3306;database=eventflow;user=eventflow;password=eventflowpassword
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+      RabbitMq__ExchangeName: eventflow.exchange
+
+  worker-processor:
+    build:
+      context: .
+      dockerfile: src/EventFlow.Worker.Processor/Dockerfile
+    container_name: eventflow-worker-processor
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: server=mysql;port=3306;database=eventflow;user=eventflow;password=eventflowpassword
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+      RabbitMq__ExchangeName: eventflow.exchange
+
+  worker-notifications:
+    build:
+      context: .
+      dockerfile: src/EventFlow.Worker.Notifications/Dockerfile
+    container_name: eventflow-worker-notifications
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: server=mysql;port=3306;database=eventflow;user=eventflow;password=eventflowpassword
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+      RabbitMq__ExchangeName: eventflow.exchange
+
+  worker-audit:
+    build:
+      context: .
+      dockerfile: src/EventFlow.Worker.Audit/Dockerfile
+    container_name: eventflow-worker-audit
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: server=mysql;port=3306;database=eventflow;user=eventflow;password=eventflowpassword
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+      RabbitMq__ExchangeName: eventflow.exchange
+
+volumes:
+  eventflow_mysql_data:
+  eventflow_rabbitmq_data:

@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <File Path=".dockerignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="docker-compose.yml" />
+    <Project Path="src/EventFlow.Api/EventFlow.Api.csproj" />
+    <Project Path="src/EventFlow.Application/EventFlow.Application.csproj" />
+    <Project Path="src/EventFlow.Contracts/EventFlow.Contracts.csproj" />
+    <Project Path="src/EventFlow.Domain/EventFlow.Domain.csproj" />
+    <Project Path="src/EventFlow.Infrastructure/EventFlow.Infrastructure.csproj" />
+    <Project Path="src/EventFlow.Worker.Audit/EventFlow.Worker.Audit.csproj" />
+    <Project Path="src/EventFlow.Worker.Notifications/EventFlow.Worker.Notifications.csproj" />
+    <Project Path="src/EventFlow.Worker.Processor/EventFlow.Worker.Processor.csproj" />
+    <Project Path="src/EventFlow.Worker.Validator/EventFlow.Worker.Validator.csproj" />
+  </Folder>
+</Solution>

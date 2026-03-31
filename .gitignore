@@ -1,0 +1,24 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.dbmdl
+
+# Build output
+bin/
+obj/
+
+# Rider / VSCode
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker overrides
+docker-compose.override.yml
